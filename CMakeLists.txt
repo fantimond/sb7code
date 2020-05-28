@@ -1,9 +1,10 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.0)
 
 project (superbible7)
 
 LINK_DIRECTORIES( ${CMAKE_SOURCE_DIR}/lib )
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
@@ -21,13 +22,17 @@ find_package(OpenGL)
 set (CMAKE_DEBUG_POSTFIX "_d")
 
 if(WIN32)
-set(COMMON_LIBS sb7 optimized glfw3 debug glfw3_d ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES})
-elseif (UNIX)
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GLFW REQUIRED glfw3)
-set(COMMON_LIBS sb7 glfw3 X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL rt dl)
+  set(COMMON_LIBS sb7 optimized glfw3 debug glfw3_d ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES})
+elseif (UNIX AND NOT APPLE)
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(GLFW REQUIRED glfw3)
+  set(COMMON_LIBS sb7 glfw3 X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL rt dl)
 else()
-set(COMMON_LIBS sb7)
+  find_package(PkgConfig REQUIRED)
+  find_package(OpenGL REQUIRED)
+  pkg_check_modules(GLFW REQUIRED glfw3 IMPORTED_TARGET)
+  set(COMMON_LIBS sb7 PkgConfig::GLFW OpenGL::GL)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework CoreFoundation")
 endif()
 
 set(COMMON_LIBS ${COMMON_LIBS} ${EXTRA_LIBS})
@@ -41,6 +46,8 @@ add_library(sb7
             src/sb7/sb7textoverlay.cpp
             src/sb7/gl3w.c
 )
+
+target_link_libraries(sb7 PkgConfig::GLFW)
 
 set(RUN_DIR ${PROJECT_SOURCE_DIR}/bin)
 
@@ -150,7 +157,7 @@ IF (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 ENDIF (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 include_directories( include )
-include_directories(extern/glfw-3.0.4/include)
+#include_directories(extern/glfw-3.0.4/include)
 
 ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
 ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
