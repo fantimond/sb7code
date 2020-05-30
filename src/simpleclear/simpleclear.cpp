@@ -21,24 +21,25 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#include <cmath>
 #include <sb7.h>
 
-class simpleclear_app : public sb7::application
-{
-    void init()
-    {
-        static const char title[] = "OpenGL SuperBible - Simple Clear";
+class SimpleClearApp : public sb7::application {
+  void init() {
+    static const char title[] = "OpenGL SuperBible - Simple Clear";
 
-        sb7::application::init();
+    sb7::application::init();
 
-        memcpy(info.title, title, sizeof(title));
-    }
+    memcpy(info.title, title, sizeof(title));
+  }
 
-    virtual void render(double currentTime)
-    {
-        static const GLfloat red[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-        glClearBufferfv(GL_COLOR, 0, red);
-    }
+  virtual void render(double current_time) {
+    static const GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0f};
+    const GLfloat color[] = {0.5f + static_cast<float>(sin(current_time)),
+                             0.5f + static_cast<float>(cos(current_time)), 0.f,
+                             1.f};
+    glClearBufferfv(GL_COLOR, 0, color);
+  }
 };
 
-DECLARE_MAIN(simpleclear_app)
+DECLARE_MAIN(SimpleClearApp)
