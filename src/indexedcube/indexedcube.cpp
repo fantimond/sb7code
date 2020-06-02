@@ -27,7 +27,7 @@
 // Remove this to draw only a single cube!
 #define MANY_CUBES
 
-class singlepoint_app : public sb7::application
+class IndexedCubeApp : public sb7::application
 {
     void init()
     {
@@ -209,4 +209,4 @@ private:
     GLint           proj_location;
 };
 
-DECLARE_MAIN(singlepoint_app)
+DECLARE_MAIN(IndexedCubeApp)

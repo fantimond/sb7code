@@ -27,7 +27,7 @@
 // Remove this to draw only a single cube!
 // #define MANY_CUBES
 
-class singlepoint_app : public sb7::application
+class SpinnyCubeApp : public sb7::application
 {
     void init()
     {
@@ -231,4 +231,4 @@ private:
     vmath::mat4     proj_matrix;
 };
 
-DECLARE_MAIN(singlepoint_app)
+DECLARE_MAIN(SpinnyCubeApp)

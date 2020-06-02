@@ -24,11 +24,11 @@
 #include <sb7.h>
 #include <math.h>
 
-class singlepoint_app : public sb7::application
+class MovingTriangleApp : public sb7::application
 {
     void init()
     {
-        static const char title[] = "OpenGL SuperBible - Single Point";
+        static const char title[] = "OpenGL SuperBible - Moving Triangle";
 
         sb7::application::init();
 
@@ -111,4 +111,4 @@ private:
     GLuint          vao;
 };
 
-DECLARE_MAIN(singlepoint_app)
+DECLARE_MAIN(MovingTriangleApp)
