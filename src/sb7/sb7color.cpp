@@ -1,12 +1,12 @@
-#include <vmath.h>
 #include <sb7color.h>
+#include <vmath.h>
 
-namespace sb7
-{
+namespace sb7 {
 
-static vmath::vec4 colorfromhex(const unsigned int hex)
-{
-    return vmath::vec4(float((hex >> 16) & 0xFF) / 255.0f, float((hex >> 8) & 0xFF) / 255.0f, float((hex >> 0) & 0xFF) / 255.0f, 1.0f);
+static vmath::vec4 colorfromhex(const unsigned int hex) {
+  return vmath::vec4(float((hex >> 16) & 0xFF) / 255.0f,
+                     float((hex >> 8) & 0xFF) / 255.0f,
+                     float((hex >> 0) & 0xFF) / 255.0f, 1.0f);
 }
 
 const vmath::vec4 color::AliceBlue = colorfromhex(0xF0F8FF);
@@ -151,4 +151,4 @@ const vmath::vec4 color::WhiteSmoke = colorfromhex(0xF5F5F5);
 const vmath::vec4 color::Yellow = colorfromhex(0xFFFF00);
 const vmath::vec4 color::YellowGreen = colorfromhex(0x9ACD32);
 
-}
+} // namespace sb7

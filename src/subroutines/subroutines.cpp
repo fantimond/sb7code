@@ -24,92 +24,84 @@
 #include <sb7.h>
 #include <shader.h>
 
-class subroutines_app : public sb7::application
-{
+class subroutines_app : public sb7::application {
 public:
-    subroutines_app()
-        : render_program(0)
-    {
+  subroutines_app() : render_program(0) {}
 
-    }
+  void startup();
 
-    void startup();
-
-    void render(double currentTime);
+  void render(double currentTime);
 
 protected:
-    void init()
-    {
-        static const char title[] = "OpenGL SuperBible - Shader Subroutines";
+  void init() {
+    static const char title[] = "OpenGL SuperBible - Shader Subroutines";
 
-        sb7::application::init();
+    sb7::application::init();
 
-        memcpy(info.title, title, sizeof(title));
-    }
+    memcpy(info.title, title, sizeof(title));
+  }
 
-    void load_shaders();
-    void onKey(int key, int action);
+  void load_shaders();
+  void onKey(int key, int action);
 
-    GLuint      render_program;
+  GLuint render_program;
 
-    GLuint      vao;
+  GLuint vao;
 
-    GLuint      subroutines[2];
+  GLuint subroutines[2];
 
-    struct
-    {
-        GLint subroutine1;
-    } uniforms;
+  struct {
+    GLint subroutine1;
+  } uniforms;
 };
 
-void subroutines_app::startup()
-{
-    load_shaders();
+void subroutines_app::startup() {
+  load_shaders();
 
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
 }
 
-void subroutines_app::render(double currentTime)
-{
-    int i = int(currentTime);
+void subroutines_app::render(double currentTime) {
+  int i = int(currentTime);
 
-    glUseProgram(render_program);
+  glUseProgram(render_program);
 
-    glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &subroutines[i & 1]);
+  glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &subroutines[i & 1]);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-void subroutines_app::load_shaders()
-{
-    GLuint shaders[2];
+void subroutines_app::load_shaders() {
+  GLuint shaders[2];
 
-    shaders[0] = sb7::shader::load("media/shaders/subroutines/subroutines.vs.glsl", GL_VERTEX_SHADER);
-    shaders[1] = sb7::shader::load("media/shaders/subroutines/subroutines.fs.glsl", GL_FRAGMENT_SHADER);
+  shaders[0] = sb7::shader::load(
+      "media/shaders/subroutines/subroutines.vs.glsl", GL_VERTEX_SHADER);
+  shaders[1] = sb7::shader::load(
+      "media/shaders/subroutines/subroutines.fs.glsl", GL_FRAGMENT_SHADER);
 
-    if (render_program)
-        glDeleteProgram(render_program);
+  if (render_program)
+    glDeleteProgram(render_program);
 
-    render_program = sb7::program::link_from_shaders(shaders, 2, true);
+  render_program = sb7::program::link_from_shaders(shaders, 2, true);
 
-    subroutines[0] = glGetSubroutineIndex(render_program, GL_FRAGMENT_SHADER, "myFunction1");
-    subroutines[1] = glGetSubroutineIndex(render_program, GL_FRAGMENT_SHADER, "myFunction2");
+  subroutines[0] =
+      glGetSubroutineIndex(render_program, GL_FRAGMENT_SHADER, "myFunction1");
+  subroutines[1] =
+      glGetSubroutineIndex(render_program, GL_FRAGMENT_SHADER, "myFunction2");
 
-    uniforms.subroutine1 = glGetSubroutineUniformLocation(render_program, GL_FRAGMENT_SHADER, "mySubroutineUniform");
+  uniforms.subroutine1 = glGetSubroutineUniformLocation(
+      render_program, GL_FRAGMENT_SHADER, "mySubroutineUniform");
 }
 
-void subroutines_app::onKey(int key, int action)
-{
-    if (action)
-    {
-        switch (key)
-        {
-            case 'R':
-                load_shaders();
-                break;
-        }
+void subroutines_app::onKey(int key, int action) {
+  if (action) {
+    switch (key) {
+    case 'R':
+      load_shaders();
+      break;
     }
+  }
 }
 
 DECLARE_MAIN(subroutines_app)
