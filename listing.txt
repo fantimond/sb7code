@@ -1,3 +1,4 @@
 simpleclear.cpp 2.2
 singlepoint.cpp 2.7
 singletri.cpp 2.9
+movingtri.cpp 3.2
