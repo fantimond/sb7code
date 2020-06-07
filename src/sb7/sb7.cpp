@@ -31,11 +31,11 @@ sb7::application *sb7::application::app = 0;
 
 #include <string.h>
 
-GL3WglProc sb6GetProcAddress(const char *funcname) {
+GL3WglProc sb7GetProcAddress(const char *funcname) {
   return gl3wGetProcAddress(funcname);
 }
 
-int sb6IsExtensionSupported(const char *extname) {
+int sb7IsExtensionSupported(const char *extname) {
   GLint numExtensions;
   GLint i;
 

@@ -149,7 +149,7 @@ public:
                 glDebugMessageCallback((GLDEBUGPROC)debug_callback, this);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
             }
-            else if (sb6IsExtensionSupported("GL_ARB_debug_output"))
+            else if (sb7IsExtensionSupported("GL_ARB_debug_output"))
             {
                 glDebugMessageCallbackARB((GLDEBUGPROC)debug_callback, this);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
