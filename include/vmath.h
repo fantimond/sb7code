@@ -1057,16 +1057,19 @@ static inline Tmat4<T> translate(const vecN<T,3>& v)
     return translate(v[0], v[1], v[2]);
 }
 
+// right-hand rule
+// Translate * WorldCoordinate = M' * CameraCoordinate
+// M' is made up of CameraAxis column vectors(relative to the world coordinate)
 template <typename T>
 static inline Tmat4<T> lookat(const vecN<T,3>& eye, const vecN<T,3>& center, const vecN<T,3>& up)
 {
-    const Tvec3<T> f = normalize(center - eye);
-    const Tvec3<T> upN = normalize(up);
-    const Tvec3<T> s = cross(f, upN);
-    const Tvec3<T> u = cross(s, f);
-    const Tmat4<T> M = Tmat4<T>(Tvec4<T>(s[0], u[0], -f[0], T(0)),
-                                Tvec4<T>(s[1], u[1], -f[1], T(0)),
-                                Tvec4<T>(s[2], u[2], -f[2], T(0)),
+    const Tvec3<T> z = normalize(eye - center);
+    const Tvec3<T> yN = normalize(up);
+    const Tvec3<T> x = cross(yN, z);
+    const Tvec3<T> y = cross(z, x);
+    const Tmat4<T> M = Tmat4<T>(Tvec4<T>(x[0], y[0], z[0], T(0)),
+                                Tvec4<T>(x[1], y[1], z[1], T(0)),
+                                Tvec4<T>(x[2], y[2], z[2], T(0)),
                                 Tvec4<T>(T(0), T(0), T(0), T(1)));
 
     return M * translate<T>(-eye);
